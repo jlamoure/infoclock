@@ -20,6 +20,7 @@
 # TODO label inside of perimeter circles at the hours
 # TODO make semicircle function
 # TODO add light/dark semicircles around clock
+# TODO daylight savings
 
 import sys, types, os, subprocess
 import time
@@ -165,13 +166,13 @@ class clock:
 
         if useThread:
            st=makeThread(self.poll)
-           #st2=makeThread(self.weather)
+           st2=makeThread(self.weather)
            #st3=makeThread(self.display)
            print("Starting threads")
            st.debug = True
            st.start()
-           #st2.debug = True
-           #st2.start()
+           st2.debug = True
+           st2.start()
            #st3.debug = True
            #st3.start()
         else:
@@ -267,9 +268,13 @@ class clock:
         #
         lat = 38.54040
         lng = -121.73917
-        tz = -7
+        tz = -7 -1
 
         sunrise, sunset = sun.sunCalc(lat, lng, tz)
+        lengthOfDay = sunset - sunrise
+        daySize = lengthOfDay*(pi/12.)
+        nightSize = 2*pi - daySize
+        print sunrise, sunset
 
         riseAngle = pi/2. - (pi/12.)*sunrise
         setAngle = pi/2. - (pi/12.)*sunset
@@ -277,8 +282,8 @@ class clock:
             riseAngle+=2*pi
         while setAngle < 0:
             setAngle+=2*pi
-        nightSize = (setAngle+(2.*pi-np.absolute(riseAngle-setAngle)))
-        daySize = (riseAngle-setAngle)
+        print riseAngle, setAngle
+        #daySize = np.absolute(riseAngle-setAngle)
 
         ############################################################
         # determine if it is daytime or nightttime                 #

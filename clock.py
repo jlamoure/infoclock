@@ -271,10 +271,16 @@ class clock:
         tz = -7 -1
 
         sunrise, sunset = sun.sunCalc(lat, lng, tz)
+        while sunrise > 24.:
+            sunrise-=24.
+        while sunset > 24.:
+            sunset-=24.
         lengthOfDay = sunset - sunrise
         daySize = lengthOfDay*(pi/12.)
         nightSize = 2*pi - daySize
-        print sunrise, sunset
+        print("sunrise: "+str(sunrise))
+        print("sunset: "+str(sunset))
+        print("length of day: "+str(lengthOfDay))
 
         riseAngle = pi/2. - (pi/12.)*sunrise
         setAngle = pi/2. - (pi/12.)*sunset
@@ -282,7 +288,9 @@ class clock:
             riseAngle+=2*pi
         while setAngle < 0:
             setAngle+=2*pi
-        print riseAngle, setAngle
+        print("rise angle: "+str(riseAngle))
+        print("set angle: "+str(setAngle))
+        print("")
         #daySize = np.absolute(riseAngle-setAngle)
 
         ############################################################
@@ -382,7 +390,7 @@ def main(argv=None):
            print ("A timezone is expected.")
            return 1
     else:
-       deltahours = 7
+       deltahours = 8
        sImage = True  
        w = h = 650
        threading = True
